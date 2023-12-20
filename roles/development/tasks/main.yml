@@ -1,0 +1,31 @@
+- name: Install prereq tooling 
+  ansible.builtin.apt:
+    pkg:
+    - git
+    - curl
+    - neovim
+    - tmux
+    - zsh
+    - fonts-powerline # needed for some zsh plugins / themes font
+  become: true
+
+- name: Install Snap Tools (Obsidian) 
+  community.general.snap:
+    name:
+      - obsidian 
+  become: true
+
+- name: Change user shell to zsh 
+  ansible.builtin.shell:
+    cmd: chsh -s $(which zsh) {{ ansible_user_id }}
+  become: true
+
+- name: Install oh-my-zsh
+  ansible.builtin.shell:
+    cmd: sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  args:
+    creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
+
+- name: Install nerd fonts
+  ansible.builtin.shell:
+    cmd: mkdir -p ~/.local/share/fonts && cd ~/.local/share/fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf
