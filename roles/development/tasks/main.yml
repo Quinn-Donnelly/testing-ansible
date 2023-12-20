@@ -2,6 +2,7 @@
   ansible.builtin.apt:
     pkg:
     - git
+    - pass # cred store for git
     - curl
     - neovim
     - tmux
