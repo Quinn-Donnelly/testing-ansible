@@ -3,6 +3,7 @@
     pkg:
     - git
     - pass # cred store for git
+    - stow
     - curl
     - neovim
     - tmux
