@@ -68,6 +68,14 @@
     chdir: "{{ playbook_dir }}/scripts"
     creates: /usr/bin/gh
 
+- name: symlink dotfiles for setup
+  ansible.builtin.file:
+    src:  '{{ playbook_dir}}/dotfiles'
+    dest: '{{ ansible_env.HOME }}/dotfiles' 
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
+    state: link
+
 - name: Configure dotfiles
   ansible.builtin.shell:
     cmd: './install'
