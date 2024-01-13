@@ -24,6 +24,7 @@
     - fzf
     - ripgrep
     - golang-go
+    - default-jdk
   become: true
 
 - name: Install Snap Tools (Obsidian) 
