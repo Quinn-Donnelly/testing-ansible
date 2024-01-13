@@ -31,3 +31,17 @@
 - name: Install nerd fonts
   ansible.builtin.shell:
     cmd: mkdir -p ~/.local/share/fonts && cd ~/.local/share/fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf
+
+- name: Install rip
+  ansible.builtin.shell:
+    cmd: wget https://github.com/nivekuil/rip/releases/download/0.12.0/rip && chmod +x rip && mv rip /usr/local/bin
+  args:
+    creates: "/usr/local/bin/rip"
+  become: true
+
+- name: Configure dotfiles
+  ansible.builtin.shell:
+    cmd: './install'
+    chdir: '{{ playbook_dir}}/dotfiles'
+  environment:
+    DOTFILES: '{{ playbook_dir }}/dotfiles'
