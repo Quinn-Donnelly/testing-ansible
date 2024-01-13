@@ -60,6 +60,13 @@
     creates: "/usr/local/bin/rip"
   become: true
 
+- name: Install github cli
+  ansible.builtin.shell:
+    cmd: ./gh.sh
+  args:
+    chdir: "{{ playbook_dir }}/scripts"
+    creates: /usr/bin/gh
+
 - name: Configure dotfiles
   ansible.builtin.shell:
     cmd: './install'
