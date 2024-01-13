@@ -16,6 +16,7 @@
     - zsh
     - fonts-powerline # needed for some zsh plugins / themes font
     - fzf
+    - ripgrep
   become: true
 
 - name: Install Snap Tools (Obsidian) 
