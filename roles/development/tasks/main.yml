@@ -23,7 +23,7 @@
     - fonts-powerline # needed for some zsh plugins / themes font
     - fzf
     - ripgrep
-    - golang-1.20
+    - golang-go
   become: true
 
 - name: Install Snap Tools (Obsidian) 
@@ -66,3 +66,12 @@
     chdir: '{{ playbook_dir}}/dotfiles'
   environment:
     DOTFILES: '{{ playbook_dir }}/dotfiles'
+
+- name: install nvm
+  ansible.builtin.shell:
+    cmd: wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm"
+
+- debug:
+    msg: You will need to run `nvm install stable` to install node. Haven't automated
