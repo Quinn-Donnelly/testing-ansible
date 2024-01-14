@@ -110,6 +110,23 @@
     chdir: "{{ playbook_dir }}/scripts"
     creates: /usr/bin/gh
 
+- name: Creates directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.oh-my-zsh/completions" 
+    state: directory
+    owner: "{{ ansible_user_id }}" 
+    group: "{{ ansible_user_id }}" 
+    mode: 0775
+    recurse: yes
+
+- name: Setup up github cli completion
+  ansible.builtin.shell:
+    cmd: gh completion -s zsh > ~/.oh-my-zsh/completions/_gh
+  args:
+    creates: "{{ ansible_env.HOME }}/.oh-my-zsh/completions/_gh"
+    chdir: "{{ ansible_env.HOME }}/.oh-my-zsh/completions/"
+
+
 - name: symlink dotfiles for setup
   ansible.builtin.file:
     src:  '{{ playbook_dir}}/dotfiles'
