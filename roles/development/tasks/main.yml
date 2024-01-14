@@ -10,6 +10,12 @@
     state: present
   become: true
 
+- name: Add universe for gnome tweaks 
+  ansible.builtin.apt_repository:
+    repo: deb http://archive.ubuntu.com/ubuntu jammy universe 
+    state: present
+  become: true
+
 - name: Install prereq tooling 
   ansible.builtin.apt:
     pkg:
@@ -25,6 +31,7 @@
     - ripgrep
     - golang-go
     - default-jdk
+    - gnome-tweaks
   become: true
 
 - name: Install Snap Tools (Obsidian) 
@@ -56,6 +63,39 @@
   args:
     creates: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
 
+- name: Install kitty
+  ansible.builtin.shell:
+    cmd: curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+  args:
+    creates: '{{ ansible_env.HOME }}/.local/kitty.app'
+
+  # need to symlink kity and kitten
+- name: symlink kitty
+  ansible.builtin.file:
+    src:  '{{ ansible_env.HOME }}/.local/kitty.app/bin/kitty'
+    dest: '/usr/local/bin/kitty' 
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
+    state: link
+  become: true
+
+- name: symlink kitten
+  ansible.builtin.file:
+    src:  '{{ ansible_env.HOME }}/.local/kitty.app/bin/kitten'
+    dest: '/usr/local/bin/kitten' 
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
+    state: link
+  become: true
+
+- name: symlink kitty desktop
+  ansible.builtin.file:
+    src:  '{{ ansible_env.HOME }}/.local/kitty.app/share/applications/kitty.desktop'
+    dest: '{{ ansible_env.HOME }}/.local/share/applications/kitty.desktop' 
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
+    state: link
+ 
 - name: Install rip
   ansible.builtin.shell:
     cmd: wget https://github.com/nivekuil/rip/releases/download/0.12.0/rip && chmod +x rip && mv rip /usr/local/bin
