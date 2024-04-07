@@ -16,6 +16,31 @@
     state: present
   become: true
 
+- name: Add Spotify GPG Key 
+  ansible.builtin.shell:
+    cmd: curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+  become: true
+
+- name: Add spotify repository
+  ansible.builtin.apt_repository:
+    repo: deb http://repository.spotify.com stable non-free
+    state: present
+  become: true
+
+- name: Add sything key
+  ansible.builtin.shell:
+    cmd: mkdir -p /etc/apt/keyrings && sudo curl -L -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg
+  become: true
+  args:
+    creates: /etc/apt/keyrings/syncthing-archive-keyring.gpg
+
+- name: Add syncthing repository
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable 
+    state: present
+  become: true
+
+
 - name: Install prereq tooling 
   ansible.builtin.apt:
     pkg:
@@ -32,12 +57,16 @@
     - golang-go
     - default-jdk
     - gnome-tweaks
+    - i3
+    - spotify-client
+    - syncthing
   become: true
 
-- name: Install Snap Tools (Obsidian) 
+- name: Install Snap Tools 
   community.general.snap:
     name:
       - obsidian 
+      - discord
   become: true
 
 - name: Change user shell to zsh 
