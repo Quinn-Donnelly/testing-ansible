@@ -1,3 +1,13 @@
+# Leaving this here so I don't forget to do this but ansible was not playing nice
+# and just hanging so I will leave this here to remind myself that adding user to the group is not automated
+#- name: Add user to video group for brightness controls in i3 to work 
+#  ansible.builtin.user:
+#    name: quinn 
+#    groups: video
+#    shell: /bin/zsh
+#    append: yes
+#  become: true
+
 - name: Add nvim repository to apt 
   ansible.builtin.apt_repository:
     repo: deb  https://ppa.launchpadcontent.net/neovim-ppa/unstable/ubuntu jammy main
@@ -60,6 +70,9 @@
     - i3
     - spotify-client
     - syncthing
+    - feh # controls background
+    - compton # compositor for transparent background
+    - brightnessctl # brightness controls
   become: true
 
 - name: Install Snap Tools 
