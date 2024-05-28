@@ -85,6 +85,8 @@
 - name: Set up tpm for tmux plugin management
   ansible.builtin.shell:
     cmd: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  args:
+    creates: '{{ ansible_env.HOME }}/.tmux/plugins/tpm'
 
 - name: Change user shell to zsh 
   ansible.builtin.shell:
@@ -187,6 +189,15 @@
     chdir: '{{ playbook_dir}}/dotfiles'
   environment:
     DOTFILES: '{{ playbook_dir }}/dotfiles'
+
+- name: setup default background
+  ansible.builtin.file:
+    src:  '{{ playbook_dir}}/dotfiles/backgrounds/waves.png'
+    dest: '{{ ansible_env.HOME }}/Pictures/default' 
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
+    state: link
+
 
 - name: install nvm
   ansible.builtin.shell:
