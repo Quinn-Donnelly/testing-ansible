@@ -80,6 +80,7 @@
     name:
       - obsidian 
       - discord
+      - firefox
   become: true
 
 - name: Set up tpm for tmux plugin management
