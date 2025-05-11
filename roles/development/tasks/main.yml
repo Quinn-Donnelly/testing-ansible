@@ -8,12 +8,6 @@
 #    append: yes
 #  become: true
 
-- name: Add nvim repository to apt 
-  ansible.builtin.apt_repository:
-    repo: deb  https://ppa.launchpadcontent.net/neovim-ppa/unstable/ubuntu jammy main
-    state: present
-  become: true
-
 - name: Add universe for gnome tweaks 
   ansible.builtin.apt_repository:
     repo: deb http://archive.ubuntu.com/ubuntu jammy universe 
@@ -52,7 +46,6 @@
     - pass # cred store for git
     - stow
     - curl
-    - neovim
     - tmux
     - zsh
     - fonts-powerline # needed for some zsh plugins / themes font
@@ -80,6 +73,7 @@
   community.general.snap:
     name:
       - go
+      - nvim
     classic: true
   become: true
 - name: Set up tpm for tmux plugin management
