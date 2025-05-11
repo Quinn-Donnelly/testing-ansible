@@ -14,12 +14,6 @@
     state: present
   become: true
 
-- name: Add golang repository to apt
-  ansible.builtin.apt_repository:
-    repo: deb https://ppa.launchpadcontent.net/longsleep/golang-backports/ubuntu jammy main
-    state: present
-  become: true
-
 - name: Add universe for gnome tweaks 
   ansible.builtin.apt_repository:
     repo: deb http://archive.ubuntu.com/ubuntu jammy universe 
@@ -64,7 +58,6 @@
     - fonts-powerline # needed for some zsh plugins / themes font
     - fzf
     - ripgrep
-    - golang-go
     - default-jdk
     - gnome-tweaks
     - i3
@@ -83,6 +76,12 @@
       - firefox
   become: true
 
+- name: Install Classic Snap Tools
+  community.general.snap:
+    name:
+      - go
+    classic: true
+  become: true
 - name: Set up tpm for tmux plugin management
   ansible.builtin.shell:
     cmd: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
