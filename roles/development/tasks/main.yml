@@ -59,6 +59,8 @@
     - feh # controls background
     - compton # compositor for transparent background
     - brightnessctl # brightness controls
+    - steam
+    - blueman
   become: true
 
 - name: Install Snap Tools 
@@ -67,6 +69,7 @@
       - obsidian 
       - discord
       - firefox
+      - anki-desktop
   become: true
 
 - name: Install Classic Snap Tools
